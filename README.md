@@ -12,6 +12,5 @@ I am assuming MySQL is your database, first start by creating the 'cities' datab
 
 `
 mysql> CREATE DATABASE cities;
-
 $ mysql -u myuser -p'mypass' cities < city_tables.sql
 `
