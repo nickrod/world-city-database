@@ -4,7 +4,7 @@ This is an easy, automated, and future-proof way to collect and curate worldwide
 
 I needed a way to collect worldwide city data so that users on my site can select and set their location. Nothing fancy, just city names, state or region, and country. The problem being solved here is that the [Maxmind](https://www.maxmind.com/en/free-world-cities-database) database previously used for this, is not being maintained anymore, so we need a better way to do this.
 
-Thanks to https://github.com/joshsmith for inspiring me, this question which provided most of the details, https://dba.stackexchange.com/questions/145080/import-geonames-allcountries-txt-into-mysql-5-7-using-load-infile-error-1300, and the geonames database that provides all the data for free, http://download.geonames.org/export/dump/
+Thanks to [John Smith](https://github.com/joshsmith) for inspiring me, [this](https://dba.stackexchange.com/questions/145080/import-geonames-allcountries-txt-into-mysql-5-7-using-load-infile-error-1300) question which provided most of the details, and the geonames [database](http://download.geonames.org/export/dump/) that provides all the data for free.
 
 # Usage
 
@@ -18,6 +18,10 @@ mysql> CREATE DATABASE cities;
 # import the tables
 
 $ mysql -u myuser -p'mypass' cities < city_tables.sql
+
+# modify this line in cities.sh to match your path for cities.sql
+
+/usr/bin/mysql -u myuser -p'mypass' cities < /my/path/cities.sql
 
 # now test that everything works by running the cities.sh shell script
 
