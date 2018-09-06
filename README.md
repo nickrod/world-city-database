@@ -10,6 +10,6 @@ Thanks to https://github.com/joshsmith for getting me started, and also this que
 
 I am assuming MySQL is your database, first start by creating the 'cities' database and importing the city_tables.sql file:
 
-`mysql -u myuser -p'mypass' cities < city_tables.sql`
+`$ mysql -u myuser -p'mypass' cities < city_tables.sql`
 
 `
