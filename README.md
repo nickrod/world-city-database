@@ -26,3 +26,7 @@ $ ./cities.sh
 Now like Ronco, 'set it and forget it' by using a cron job. In this example it will run every six months:
 
 `0 0 1 */6 * /usr/local/bin/cities.sh`
+
+# Notes
+
+In the cities.sh script I am choosing to download cities with a population of 15,000 or more. You can change this by choosing the appropriate file in http://download.geonames.org/export/dump/ and making the changes to the script. There are also options for 1000 or 5000, depending on the level of detail you need.
