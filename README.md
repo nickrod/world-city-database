@@ -23,3 +23,6 @@ $ mysql -u myuser -p'mypass' cities < city_tables.sql
 
 $ ./cities.sh
 ```
+Now like Ronco, 'set it and forget it' by using a cron job:
+
+`0 0 1 */6 * /usr/local/bin/cities.sh`
