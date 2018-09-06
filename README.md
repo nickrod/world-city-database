@@ -18,4 +18,8 @@ mysql> CREATE DATABASE cities;
 # import the tables
 
 $ mysql -u myuser -p'mypass' cities < city_tables.sql
+
+# now test that everything works by running the cities.sh shell script
+
+$ ./cities.sh
 ```
