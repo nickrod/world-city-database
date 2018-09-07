@@ -27,7 +27,7 @@ $ mysql -u myuser -p'mypass' cities < city_tables.sql
 
 $ ./cities.sh
 ```
-Now like Ronco, 'set it and forget it' by using a cron job. In this example it will run every six months:
+Now like [Ronco](https://www.youtube.com/watch?v=GG43jyZ65R8), 'set it and forget it' by using a cron job. In this example it will run every six months:
 
 `0 0 1 */6 * /usr/local/bin/cities.sh`
 
