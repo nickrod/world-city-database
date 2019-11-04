@@ -8,29 +8,24 @@ Thanks to [John Smith](https://github.com/joshsmith) for inspiring me, [this](ht
 
 # Usage
 
-I am assuming MySQL is your database, first start by creating the 'cities' database and importing the city_tables.sql file:
+I am assuming PostgreSQL is your database:
 
 ```
-# create the database
+# Modify population and db vars fields in city.sh
 
-mysql> CREATE DATABASE cities;
+POPULATION=""
+USER=""
+DB=""
+HOST=""
 
-# import the tables
+# Run the city.sh shell script
 
-$ mysql -u myuser -p'mypass' cities < city_tables.sql
-
-# modify this line in cities.sh to match your path for cities.sql
-
-/usr/bin/mysql -u myuser -p'mypass' cities < /my/path/cities.sql
-
-# now test that everything works by running the cities.sh shell script
-
-$ ./cities.sh
+$ ./city.sh
 ```
 Now like [Ronco](https://www.youtube.com/watch?v=GG43jyZ65R8), 'set it and forget it' by using a cron job. In this example it will run every six months:
 
-`0 0 1 */6 * /usr/local/bin/cities.sh`
+`0 0 1 */6 * /usr/local/bin/city.sh`
 
 # Notes
 
-In the cities.sh script I am choosing to download cities with a population of 15,000 or more. You can change this by choosing the appropriate file in the geonames [db](http://download.geonames.org/export/dump/) and making the changes to the cities.sh script. There are also options for 1000 or 5000, depending on the level of detail you need.
+The 'title_combined' field is unique, and wll either be the title by itself or 'title, title_region' if there are duplicates. This means that 'title_combined' can be used as a unique identifier instead of using 'geoname_id'.
