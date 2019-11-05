@@ -28,7 +28,7 @@ echo "DELETE FROM city;" >> $CITYFILE
 
 # download files
 
-wget -qO- http://download.geonames.org/export/dump/cities$POPULATION.zip | zcat | awk 'BEGIN { FS="\t" } { gsub("\x27", "\x27\x27", $2); print "INSERT INTO city (geoname_id, title, country_code, region_code) VALUES (" $1 ", \x27" $2 "\x27, \x27" $9 "\x27, \x27" $11 "\x27);" }' >> $CITYFILE
+wget -qO- http://download.geonames.org/export/dump/cities$POPULATION.zip | zcat | awk 'BEGIN { FS="\t" } { gsub("\x27", "\x27\x27", $2); print "INSERT INTO city (geoname_id, title, latitude, longitude, country_code, region_code) VALUES (" $1 ", \x27" $2 "\x27, " $5 ", " $6 ", \x27" $9 "\x27, \x27" $11 "\x27);" }' >> $CITYFILE
 wget -qO- http://download.geonames.org/export/dump/admin1CodesASCII.txt | cat | awk 'BEGIN { FS="\t" } { gsub("\x27", "\x27\x27", $2); print "INSERT INTO region (geoname_id, title, code) VALUES (" $4 ", \x27" $2 "\x27, \x27" $1 "\x27);" }' > $REGIONFILE
 
 # end transaction
@@ -43,6 +43,8 @@ CREATE TABLE IF NOT EXISTS city (
   title TEXT NOT NULL,
   title_region TEXT,
   title_combined TEXT,
+  latitude DECIMAL(7,5),
+  longitude DECIMAL(8,5),
   country_code CHAR(2),
   region_code TEXT,
   UNIQUE(title_combined),
