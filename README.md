@@ -20,7 +20,7 @@ $ ./city.sh
 ```
 Now like [Ronco](https://www.youtube.com/watch?v=GG43jyZ65R8), 'set it and forget it' by using a cron job. In this example it will run every six months:
 
-`0 0 1 */6 * /usr/local/bin/city.sh`
+`0 0 1 */6 * city.sh`
 
 # Notes
 
