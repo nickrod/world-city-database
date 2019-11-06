@@ -38,6 +38,20 @@ echo "COMMIT;" >> $CITYFILE
 # prepare sql
 
 cat << EOF > $CITYSQLFILE
+CREATE TABLE IF NOT EXISTS region (
+  geoname_id INT NOT NULL,
+  title TEXT NOT NULL,
+  code TEXT NOT NULL,
+  UNIQUE(code),
+  PRIMARY KEY(geoname_id)
+);
+
+--
+
+CREATE INDEX IF NOT EXISTS idx_region_code ON region(code);
+
+--
+
 CREATE TABLE IF NOT EXISTS city (
   geoname_id INT NOT NULL,
   title TEXT NOT NULL,
@@ -55,22 +69,19 @@ CREATE TABLE IF NOT EXISTS city (
 
 CREATE INDEX IF NOT EXISTS idx_city_title ON city(title);
 CREATE INDEX IF NOT EXISTS idx_city_title_region ON city(title_region);
+CREATE INDEX IF NOT EXISTS idx_city_title_combined ON city(title_combined);
+CREATE INDEX IF NOT EXISTS idx_city_latitude ON city(latitude);
+CREATE INDEX IF NOT EXISTS idx_city_longitude ON city(longitude);
 CREATE INDEX IF NOT EXISTS idx_city_country_code ON city(country_code);
 CREATE INDEX IF NOT EXISTS idx_city_region_code ON city(region_code);
 
 --
 
-CREATE TABLE IF NOT EXISTS region (
-  geoname_id INT NOT NULL,
-  title TEXT NOT NULL,
-  code TEXT NOT NULL,
-  UNIQUE(code),
-  PRIMARY KEY(geoname_id)
+CREATE TABLE IF NOT EXISTS location (
+  id SERIAL PRIMARY KEY,
+  geoname_id INT NOT NULL REFERENCES city(geoname_id) ON DELETE CASCADE DEFERRABLE,
+  UNIQUE(geoname_id)
 );
-
---
-
-CREATE INDEX IF NOT EXISTS idx_region_code ON region(code);
 
 --
 
