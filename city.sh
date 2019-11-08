@@ -24,7 +24,7 @@ CITYSQLFILE="/tmp/citysql.sql"
 
 echo "BEGIN;" > $CITYFILE
 echo "SET CONSTRAINTS location_geoname_id_fkey DEFERRED;" >> $CITYFILE
-echo "DELETE FROM city;" >> $CITYFILE
+echo "TRUNCATE TABLE city;" >> $CITYFILE
 
 # download files
 
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS location (
 
 --
 
-DELETE FROM region;
+TRUNCATE TABLE region;
 EOF
 
 # check if files exist
