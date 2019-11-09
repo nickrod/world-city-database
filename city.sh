@@ -12,6 +12,13 @@ USER=""
 DB=""
 HOST=""
 
+# validation
+
+if [ $# -ne 1 -a "$1" != "mysql" -a "$1" != "psql" ] ; then
+  echo "Usage: $0 [mysql|psql]" >&2
+  exit 1
+fi
+
 ######### Don't modify below this line #########
 
 # tmp files
@@ -22,8 +29,15 @@ CITYSQLFILE="/tmp/citysql.sql"
 
 # begin transaction and set constraints
 
-echo "BEGIN;" > $CITYFILE
-echo "SET CONSTRAINTS location_geoname_id_fkey DEFERRED;" >> $CITYFILE
+if [ "$1" -eq "psql" ] ; then
+  echo "BEGIN;" > $CITYFILE
+  echo "SET CONSTRAINTS location_geoname_id_fkey DEFERRED;" >> $CITYFILE
+else
+  echo "SET FOREIGN_KEY_CHECKS=0;" > $CITYFILE
+fi
+
+#
+
 echo "TRUNCATE TABLE city;" >> $CITYFILE
 
 # download files
@@ -33,7 +47,11 @@ wget -qO- http://download.geonames.org/export/dump/admin1CodesASCII.txt | cat | 
 
 # end transaction
 
-echo "COMMIT;" >> $CITYFILE
+if [ "$1" -eq "psql" ] ; then
+  echo "COMMIT;" >> $CITYFILE
+else
+  echo "SET FOREIGN_KEY_CHECKS=1;" >> $CITYFILE
+fi
 
 # prepare sql
 
@@ -105,7 +123,11 @@ CITYSQL5="UPDATE city SET title_combined = CONCAT(city.title, ' ', city.title_re
 
 # run the sql commands
 
-psql -U "$USER" -d "$DB" -h "$HOST" -f "$CITYSQLFILE" -f "$CITYFILE" -f "$REGIONFILE" -c "$CITYSQL1" -c "$CITYSQL2" -c "$CITYSQL3" -c "$CITYSQL4" -c "$CITYSQL5" -q
+if [ "$1" -eq "psql" ] ; then
+  psql -U "$USER" -d "$DB" -h "$HOST" -f "$CITYSQLFILE" -f "$CITYFILE" -f "$REGIONFILE" -c "$CITYSQL1" -c "$CITYSQL2" -c "$CITYSQL3" -c "$CITYSQL4" -c "$CITYSQL5" -q
+else
+  mysql
+fi
 
 # remove tmp files if they exist
 
