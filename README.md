@@ -4,23 +4,28 @@ This is an easy, automated, and future-proof way to collect and curate worldwide
 
 # Usage
 
-I am assuming PostgreSQL is your database:
+Either PostgreSQL or MySQL can be used, but it must be specified on the command line, in the example below PostgreSQL is used:
 
 ```
 # Modify population and db vars fields in city.sh
 
+# population - 500, 1000, 5000, or 15000
+
 POPULATION="15000"
+
+# db vars
+
 USER=""
 DB=""
 HOST=""
 
 # Run the city.sh shell script
 
-$ ./city.sh
+$ ./city.sh psql
 ```
 Now like [Ronco](https://www.youtube.com/watch?v=GG43jyZ65R8), 'set it and forget it' by using a cron job. In this example it will run every six months:
 
-`0 0 1 */6 * city.sh`
+`0 0 1 */6 * city.sh psql`
 
 # Notes
 
