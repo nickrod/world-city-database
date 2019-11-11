@@ -26,6 +26,6 @@ Now like [Ronco](https://www.youtube.com/watch?v=GG43jyZ65R8), 'set it and forge
 
 The 'title_combined' field is unique, and wll either be the title by itself or 'title, title_region' if there are duplicates. This means that 'title_combined' can be used as a unique identifier instead of using 'geoname_id'.
 
-This is designed to be used with a foreign key on the geoname_id without causing any foreign key constraint violations.
+This is designed to be used with a foreign key on 'geoname_id' using the 'location' table, without causing any foreign key constraint violations. This means it can be seamlessly updated without compromising db integrity.
 
 Future update will include MySQL support.
