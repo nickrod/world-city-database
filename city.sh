@@ -31,7 +31,7 @@ CITYSQLFILE="/tmp/citysql.sql"
 
 if [ "$1" -eq "psql" ] ; then
   echo "BEGIN;" > $CITYFILE
-  echo "SET CONSTRAINTS location_geoname_id_fkey DEFERRED;" >> $CITYFILE
+  echo "SET CONSTRAINTS ALL DEFERRED;" >> $CITYFILE
 else
   echo "SET FOREIGN_KEY_CHECKS=0;" > $CITYFILE
 fi
@@ -92,14 +92,6 @@ CREATE INDEX IF NOT EXISTS idx_city_latitude ON city(latitude);
 CREATE INDEX IF NOT EXISTS idx_city_longitude ON city(longitude);
 CREATE INDEX IF NOT EXISTS idx_city_country_code ON city(country_code);
 CREATE INDEX IF NOT EXISTS idx_city_region_code ON city(region_code);
-
---
-
-CREATE TABLE IF NOT EXISTS location (
-  id SERIAL PRIMARY KEY,
-  geoname_id INT NOT NULL REFERENCES city(geoname_id) ON DELETE CASCADE DEFERRABLE,
-  UNIQUE(geoname_id)
-);
 
 --
 
