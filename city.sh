@@ -29,7 +29,7 @@ CITYSQLFILE="/tmp/citysql.sql"
 
 # begin transaction and set constraints
 
-if [ "$1" -eq "psql" ] ; then
+if [ "$1" == "psql" ] ; then
   echo "BEGIN;" > $CITYFILE
   echo "SET CONSTRAINTS ALL DEFERRED;" >> $CITYFILE
 else
@@ -47,7 +47,7 @@ wget -qO- http://download.geonames.org/export/dump/admin1CodesASCII.txt | cat | 
 
 # end transaction
 
-if [ "$1" -eq "psql" ] ; then
+if [ "$1" == "psql" ] ; then
   echo "COMMIT;" >> $CITYFILE
 else
   echo "SET FOREIGN_KEY_CHECKS=1;" >> $CITYFILE
@@ -115,7 +115,7 @@ CITYSQL5="UPDATE city SET title_combined = CONCAT(city.title, ' ', city.title_re
 
 # run the sql commands
 
-if [ "$1" -eq "psql" ] ; then
+if [ "$1" == "psql" ] ; then
   psql -U "$USER" -d "$DB" -h "$HOST" -f "$CITYSQLFILE" -f "$CITYFILE" -f "$REGIONFILE" -c "$CITYSQL1" -c "$CITYSQL2" -c "$CITYSQL3" -c "$CITYSQL4" -c "$CITYSQL5" -q
 else
   mysql -u "$USER" -D "$DB" -h "$HOST" -e "source $CITYSQLFILE" -e "source $CITYFILE" -e "source $REGIONFILE" -e "$CITYSQL1" -e "$CITYSQL2" -e "$CITYSQL3" -e "$CITYSQL4" -e "$CITYSQL5"
