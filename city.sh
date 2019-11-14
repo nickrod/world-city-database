@@ -10,7 +10,7 @@ POPULATION="15000"
 
 USER=""
 DB=""
-HOST=""
+HOST="localhost"
 
 # validation
 

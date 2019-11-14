@@ -1,6 +1,6 @@
 # About
 
-This is an easy, automated, and future-proof way to collect and curate worldwide city data. It's very similar to [this project](https://github.com/JoshSmith/worldwide-city-database) but with the focus on complete automation. It's 2018 and finding curated city data that can be stored locally shouldn't be this difficult.
+This is an easy, automated, and future-proof way to collect and curate worldwide city data locally.
 
 # Usage
 
@@ -17,7 +17,7 @@ POPULATION="15000"
 
 USER=""
 DB=""
-HOST=""
+HOST="localhost"
 
 # Run the city.sh shell script
 
