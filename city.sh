@@ -59,26 +59,22 @@ cat << EOF > $CITYSQLFILE
 CREATE TABLE IF NOT EXISTS region (
   geoname_id INT NOT NULL,
   title TEXT NOT NULL,
-  code VARCHAR(200) NOT NULL,
+  code VARCHAR(191) NOT NULL,
   UNIQUE(code),
   PRIMARY KEY(geoname_id)
 );
 
 --
 
-CREATE INDEX IF NOT EXISTS idx_region_code ON region(code);
-
---
-
 CREATE TABLE IF NOT EXISTS city (
   geoname_id INT NOT NULL,
-  title TEXT NOT NULL,
-  title_region TEXT,
-  title_combined VARCHAR(200),
+  title VARCHAR(191) NOT NULL,
+  title_region VARCHAR(191),
+  title_combined VARCHAR(191),
   latitude DECIMAL(7,5),
   longitude DECIMAL(8,5),
   country_code CHAR(2),
-  region_code TEXT,
+  region_code VARCHAR(191),
   UNIQUE(title_combined),
   PRIMARY KEY(geoname_id)
 );
@@ -87,7 +83,6 @@ CREATE TABLE IF NOT EXISTS city (
 
 CREATE INDEX IF NOT EXISTS idx_city_title ON city(title);
 CREATE INDEX IF NOT EXISTS idx_city_title_region ON city(title_region);
-CREATE INDEX IF NOT EXISTS idx_city_title_combined ON city(title_combined);
 CREATE INDEX IF NOT EXISTS idx_city_latitude ON city(latitude);
 CREATE INDEX IF NOT EXISTS idx_city_longitude ON city(longitude);
 CREATE INDEX IF NOT EXISTS idx_city_country_code ON city(country_code);
