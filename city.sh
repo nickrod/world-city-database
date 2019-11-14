@@ -102,18 +102,26 @@ fi
 
 # update region after file copy, and remove unneeded index
 
-CITYSQL1="UPDATE city SET title_region = region.title FROM region WHERE CONCAT(country_code, '.', region_code) = code AND region.title != '';"
-CITYSQL2="DELETE FROM city c1 USING city c2 WHERE c1.geoname_id < c2.geoname_id AND c1.title = c2.title AND c1.title_region = c2.title_region AND c1.country_code = c2.country_code;"
-CITYSQL3="UPDATE city SET title_combined = CONCAT(city.title, ' ', city.title_region, ' ', city.country_code) FROM city c2 WHERE city.geoname_id != c2.geoname_id AND city.title = c2.title AND city.title_region = c2.title_region AND city.title_combined IS NULL;"
-CITYSQL4="UPDATE city SET title_combined = CONCAT(city.title, ' ', city.country_code) FROM city c2 WHERE city.geoname_id != c2.geoname_id AND city.title = c2.title AND city.country_code != c2.country_code AND city.title_region IS NULL AND city.title_combined IS NULL;"
-CITYSQL5="UPDATE city SET title_combined = CONCAT(city.title, ' ', city.title_region) FROM city c2 WHERE city.geoname_id != c2.geoname_id AND city.title = c2.title AND city.title_region != c2.title_region AND city.title_combined IS NULL;"
+if [ "$1" = "psql" ] ; then
+  CITYSQL1="UPDATE city SET title_region = region.title FROM region WHERE CONCAT(country_code, '.', region_code) = code AND region.title != '';"
+  CITYSQL2="DELETE FROM city c1 USING city c2 WHERE c1.geoname_id < c2.geoname_id AND c1.title = c2.title AND c1.title_region = c2.title_region AND c1.country_code = c2.country_code;"
+  CITYSQL3="UPDATE city SET title_combined = CONCAT(city.title, ' ', city.title_region, ' ', city.country_code) FROM city c2 WHERE city.geoname_id != c2.geoname_id AND city.title = c2.title AND city.title_region = c2.title_region AND city.title_combined IS NULL;"
+  CITYSQL4="UPDATE city SET title_combined = CONCAT(city.title, ' ', city.country_code) FROM city c2 WHERE city.geoname_id != c2.geoname_id AND city.title = c2.title AND city.country_code != c2.country_code AND city.title_region IS NULL AND city.title_combined IS NULL;"
+  CITYSQL5="UPDATE city SET title_combined = CONCAT(city.title, ' ', city.title_region) FROM city c2 WHERE city.geoname_id != c2.geoname_id AND city.title = c2.title AND city.title_region != c2.title_region AND city.title_combined IS NULL;"
+else
+  CITYSQL1="UPDATE city, region SET title_region = region.title WHERE CONCAT(country_code, '.', region_code) = code AND region.title != '';"
+  CITYSQL2="DELETE c1 FROM city c1 INNER JOIN city c2 ON c1.geoname_id < c2.geoname_id WHERE c1.title = c2.title AND c1.title_region = c2.title_region AND c1.country_code = c2.country_code;"
+  CITYSQL3="UPDATE city, city c2 SET title_combined = CONCAT(city.title, ' ', city.title_region, ' ', city.country_code) WHERE city.geoname_id != c2.geoname_id AND city.title = c2.title AND city.title_region = c2.title_region AND city.title_combined IS NULL;"
+  CITYSQL4="UPDATE city, city c2 SET title_combined = CONCAT(city.title, ' ', city.country_code) WHERE city.geoname_id != c2.geoname_id AND city.title = c2.title AND city.country_code != c2.country_code AND city.title_region IS NULL AND city.title_combined IS NULL;"
+  CITYSQL5="UPDATE city, city c2 SET title_combined = CONCAT(city.title, ' ', city.title_region) WHERE city.geoname_id != c2.geoname_id AND city.title = c2.title AND city.title_region != c2.title_region AND city.title_combined IS NULL;"
+fi
 
 # run the sql commands
 
 if [ "$1" = "psql" ] ; then
   psql -U "$USER" -d "$DB" -h "$HOST" -f "$CITYSQLFILE" -f "$CITYFILE" -f "$REGIONFILE" -c "$CITYSQL1" -c "$CITYSQL2" -c "$CITYSQL3" -c "$CITYSQL4" -c "$CITYSQL5" -q
 else
-  mysql -u "$USER" -D "$DB" -h "$HOST" -e "source $CITYSQLFILE;" -e "source $CITYFILE;" -e "source $REGIONFILE;" -e "$CITYSQL1" -e "$CITYSQL2" -e "$CITYSQL3" -e "$CITYSQL4" -e "$CITYSQL5"
+  mysql -u "$USER" -D "$DB" -h "$HOST" -e "source $CITYSQLFILE;" -e "source $CITYFILE;" -e "source $REGIONFILE;" -e "$CITYSQL1" -e "$CITYSQL2" -e "$CITYSQL3" -e "$CITYSQL4" -e "$CITYSQL5" -s
 fi
 
 # remove tmp files if they exist
