@@ -59,7 +59,7 @@ cat << EOF > $CITYSQLFILE
 CREATE TABLE IF NOT EXISTS region (
   geoname_id INT NOT NULL,
   title TEXT NOT NULL,
-  code TEXT NOT NULL,
+  code VARCHAR(200) NOT NULL,
   UNIQUE(code),
   PRIMARY KEY(geoname_id)
 );
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS city (
   geoname_id INT NOT NULL,
   title TEXT NOT NULL,
   title_region TEXT,
-  title_combined TEXT,
+  title_combined VARCHAR(200),
   latitude DECIMAL(7,5),
   longitude DECIMAL(8,5),
   country_code CHAR(2),
@@ -118,7 +118,7 @@ CITYSQL5="UPDATE city SET title_combined = CONCAT(city.title, ' ', city.title_re
 if [ "$1" = "psql" ] ; then
   psql -U "$USER" -d "$DB" -h "$HOST" -f "$CITYSQLFILE" -f "$CITYFILE" -f "$REGIONFILE" -c "$CITYSQL1" -c "$CITYSQL2" -c "$CITYSQL3" -c "$CITYSQL4" -c "$CITYSQL5" -q
 else
-  mysql -u "$USER" -D "$DB" -h "$HOST" -e "source $CITYSQLFILE" -e "source $CITYFILE" -e "source $REGIONFILE" -e "$CITYSQL1" -e "$CITYSQL2" -e "$CITYSQL3" -e "$CITYSQL4" -e "$CITYSQL5"
+  mysql -u "$USER" -D "$DB" -h "$HOST" -e "source $CITYSQLFILE;" -e "source $CITYFILE;" -e "source $REGIONFILE;" -e "$CITYSQL1" -e "$CITYSQL2" -e "$CITYSQL3" -e "$CITYSQL4" -e "$CITYSQL5"
 fi
 
 # remove tmp files if they exist
